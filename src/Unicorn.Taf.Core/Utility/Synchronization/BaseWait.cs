@@ -7,15 +7,15 @@ namespace Unicorn.Taf.Core.Utility.Synchronization
     /// <summary>
     /// Provides base for implementation of waiters
     /// </summary>
-    public abstract class AbstractWait
+    public abstract class BaseWait
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AbstractWait"/> class.
+        /// Initializes a new instance of the <see cref="BaseWait"/> class.
         /// </summary>
-        protected AbstractWait()
+        protected BaseWait()
         {
-            this.Timer = new WaitTimer();
-            this.IgnoredExceptions = new List<Type>();
+            Timer = new WaitTimer();
+            IgnoredExceptions = new List<Type>();
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Unicorn.Taf.Core.Utility.Synchronization
                 }
             }
 
-            this.IgnoredExceptions.AddRange(exceptionTypes);
+            IgnoredExceptions.AddRange(exceptionTypes);
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Unicorn.Taf.Core.Utility.Synchronization
         /// <param name="exception">exception instance</param>
         /// <returns><see langword="true"/> if the current exception should be ignored; otherwise, <see langword="false"/>.</returns>
         protected bool IsIgnoredException(Exception exception) =>
-            this.IgnoredExceptions.Any(type => type.IsAssignableFrom(exception.GetType()));
+            IgnoredExceptions.Any(type => type.IsAssignableFrom(exception.GetType()));
 
         /// <summary>
         /// Construct message to use in <see cref="TimeoutException"/> of waiter.
@@ -75,7 +75,7 @@ namespace Unicorn.Taf.Core.Utility.Synchronization
         /// <param name="conditionName">name of wait condition to report</param>
         /// <returns>message string</returns>
         protected string GenerateTimeoutMessage(string conditionName) =>
-            string.IsNullOrEmpty(this.ErrorMessage) ? string.Empty : $"{this.ErrorMessage}: " + 
+            string.IsNullOrEmpty(ErrorMessage) ? string.Empty : $"{ErrorMessage}: " + 
             string.Format("{0} expired after {1:F1} seconds", conditionName, Timeout.TotalSeconds);
     }
 }

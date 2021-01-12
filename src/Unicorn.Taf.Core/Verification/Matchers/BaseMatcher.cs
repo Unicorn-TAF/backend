@@ -5,14 +5,14 @@ namespace Unicorn.Taf.Core.Verification.Matchers
     /// <summary>
     /// Provides implementation of abstract self-describing check.
     /// </summary>
-    public abstract class AbstractMatcher
+    public abstract class BaseMatcher
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AbstractMatcher"/> class.
+        /// Initializes a new instance of the <see cref="BaseMatcher"/> class.
         /// </summary>
-        protected AbstractMatcher()
+        protected BaseMatcher()
         {
-            this.Output = new StringBuilder();
+            Output = new StringBuilder();
         }
 
         /// <summary>
@@ -36,13 +36,13 @@ namespace Unicorn.Taf.Core.Verification.Matchers
         /// </summary>
         /// <param name="mismatch">mismatch description</param>
         public virtual void DescribeMismatch(string mismatch) =>
-            this.Output.Append("was ").Append(mismatch);
+            Output.Append("was ").Append(mismatch);
 
         /// <summary>
         /// Gets check description.
         /// </summary>
         /// <returns>description string</returns>
         public override string ToString() =>
-            this.CheckDescription;
+            CheckDescription;
     }
 }

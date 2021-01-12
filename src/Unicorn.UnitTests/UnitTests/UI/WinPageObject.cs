@@ -1,21 +1,20 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using System;
 using Unicorn.UI.Core.Controls;
-using Unicorn.UI.Desktop.Driver;
-using Unicorn.UnitTests.Gui;
-using Unicorn.UnitTests.Util;
+using Unicorn.UI.Win.Driver;
+using Unicorn.UnitTests.Gui.Win;
 
-namespace Unicorn.UnitTests.Tests
+namespace Unicorn.UnitTests.UI
 {
     [TestFixture]
-    public class GuiPageObject : NUnitTestRunner
+    public class WinPageObject
     {
         private static CharmapApplication charmap;
 
         [OneTimeSetUp]
         public static void Setup()
         {
-            charmap = new CharmapApplication(@"C:\Windows\System32", "charmap.exe");
+            charmap = new CharmapApplication();
             charmap.Start();
         }
 
@@ -25,17 +24,17 @@ namespace Unicorn.UnitTests.Tests
 
         [Author("Vitaliy Dobriyan")]
         [Test(Description = "Check that not existing controls don't brake page object initialization")]
-        public void TestGuiPageObjectNotExistingControlsDontBrakePageObjectInitialization() =>
+        public void TestWinPageObjectNotExistingControlsDontBrakePageObjectInitialization() =>
             Assert.IsTrue(charmap.Window.Visible);
 
         [Author("Vitaliy Dobriyan")]
         [Test(Description = "Check nested controls initialization")]
-        public void TestGuiPageObjectNestedControlsInitialization() =>
+        public void TestWinPageObjectNestedControlsInitialization() =>
             Assert.IsTrue(charmap.Window.ButtonCopy.Visible);
 
         [Author("Vitaliy Dobriyan")]
         [Test(Description = "Check non public controls initialization")]
-        public void TestGuiPageObjectNonPublicControlsInitialization() =>
+        public void TestWinPageObjectNonPublicControlsInitialization() =>
             Assert.IsTrue(charmap.Window.SelectButton.Visible);
 
         [Author("Vitaliy Dobriyan")]
@@ -45,55 +44,58 @@ namespace Unicorn.UnitTests.Tests
 
         [Author("Vitaliy Dobriyan")]
         [Test(Description = "Check initialization of controls as class fields")]
-        public void TestGuiPageObjectInitializationOfControlsAsClassFields() =>
+        public void TestWinPageObjectInitializationOfControlsAsClassFields() =>
             Assert.IsTrue(charmap.Window.GetCopyButtonFromField().Visible);
 
         [Author("Vitaliy Dobriyan")]
         [Test(Description = "Check for basic control search from initialized parent container")]
-        public void TestGuiPageObjectBasicControlSearchFromInitializedContainer() =>
+        public void TestWinPageObjectBasicControlSearchFromInitializedContainer() =>
             Assert.IsTrue(charmap.Window.ButtonHelp.Visible);
 
         [Author("Vitaliy Dobriyan")]
         [Test(Description = "Check that page object initialized controls are cached")]
-        public void TestGuiPageObjectInitializedControlsAreNotCached() =>
+        public void TestWinPageObjectInitializedControlsAreNotCached() =>
             Assert.IsFalse(charmap.Window.ButtonCopy.Cached);
 
         [Author("Vitaliy Dobriyan")]
         [Test(Description = "Check that controls found by base search are cached")]
-        public void TestGuiPageObjectBaseSearchedControlsAreCached() =>
+        public void TestWinPageObjectBaseSearchedControlsAreCached() =>
             Assert.IsTrue(charmap.Window.ButtonHelp.Cached);
 
         [Author("Vitaliy Dobriyan")]
         [Test(Description = "Check Call for not existing control")]
-        public void TestGuiPageObjectNotExistingControl()
+        public void TestWinPageObjectNotExistingControl()
         {
-            var originalWait = GuiDriver.Instance.ImplicitlyWait;
-            GuiDriver.Instance.ImplicitlyWait = TimeSpan.FromMilliseconds(10);
+            var originalWait = WinDriver.Instance.ImplicitlyWait;
+            WinDriver.Instance.ImplicitlyWait = TimeSpan.FromMilliseconds(10);
 
             try
             {
-                var visible = charmap.FakeWindow.Visible;
-                Assert.Fail($"windows is visible ({visible})");
+                var enabled = charmap.FakeWindow.Enabled;
+                Assert.Fail($"windows is enabled ({enabled})");
             }
             catch (ControlNotFoundException)
             {
                 // this is positive scenario, nothing to do
             }
-            catch
+            catch (AssertionException)
             {
-                Assert.Fail();
+                Assert.Fail("Fake windows was found");
             }
             finally
             {
-                GuiDriver.Instance.ImplicitlyWait = originalWait;
+                WinDriver.Instance.ImplicitlyWait = originalWait;
             }
         }
 
         [Author("Vitaliy Dobriyan")]
-        [Test(Description = "Check dynamic dropdown selects value")]
-        public void TestGuiDynamicDropdownSelection()
-        {
-            charmap.Window.Droppik.Select("Arial");
-        }
+        [Test(Description = "Check private control field with default locator")]
+        public void TestPrivateControlFieldWithDefaultLocator() =>
+            Assert.IsTrue(charmap.Window.ButtonCopyDefaultLocatorGetter.Visible);
+
+        [Author("Vitaliy Dobriyan")]
+        [Test(Description = "Check public control property with default locator")]
+        public void TestPublicControlPropertyWithDefaultLocator() =>
+            Assert.IsTrue(charmap.Window.ButtonCopyDefaultLocator.Visible);
     }
 }
