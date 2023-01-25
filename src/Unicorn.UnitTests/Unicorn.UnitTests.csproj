@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Unicorn.Backend\Unicorn.Backend.csproj" />
-    <ProjectReference Include="..\Unicorn.Taf.Core\Unicorn.Taf.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net452'">
