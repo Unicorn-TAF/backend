@@ -43,7 +43,7 @@ namespace Unicorn.Backend.Services.RestService
                 }
                 catch (JsonReaderException)
                 {
-                    Logger.Instance.Log(LogLevel.Error, "Unable to parse response as JSON. Content:" + Environment.NewLine + Content);
+                    ULog.Error("Unable to parse response as JSON. Content: {0}{0}", Environment.NewLine, Content);
                     throw;
                 }
             }

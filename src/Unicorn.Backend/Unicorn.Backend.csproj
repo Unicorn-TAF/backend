@@ -1,9 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>2.0.0</Version>
-    <FileVersion>2.0.0.0</FileVersion>
-    <TargetFrameworks>net5.0;net452;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <NuspecProperties>version=$(Version)</NuspecProperties>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -16,12 +15,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Unicorn.Taf.Core" Version="3.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)'!='net5.0' And '$(TargetFramework)'!='netstandard2.0'">
-    <Reference Include="System.Net.Http" />
+    <PackageReference Include="Unicorn.Taf.Core" Version="4.0.0-rc1" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
 </Project>
