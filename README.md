@@ -64,3 +64,9 @@ public class CustomApiClient : RestClient
     }
 }
 ```
+
+Files download
+```csharp
+RestClient client = new RestClient("https://some-url");
+client.DownloadFile("/api/some-endpoint", "destination_directory_");
+```

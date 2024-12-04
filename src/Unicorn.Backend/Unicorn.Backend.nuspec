@@ -20,7 +20,7 @@
     <tags>unicorn-taf automation matchers web-services rest</tags>
     <dependencies>
       <group targetFramework="netstandard2.0">
-        <dependency id="Unicorn.Taf.Core" version="4.0.0-rc1"/>
+        <dependency id="Unicorn.Taf.Core" version="4.0.0"/>
         <dependency id="System.Net.Http" version="4.3.4"/>
         <dependency id="Newtonsoft.Json" version="13.0.3"/>
       </group>
