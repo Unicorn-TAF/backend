@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using Unicorn.Backend.Matchers;
 using Unicorn.Backend.Services.RestService;
 using Unicorn.Taf.Core.Testing.Attributes;
@@ -11,46 +10,14 @@ namespace Unicorn.UnitTests.Tests
     [Suite]
     public class RestMatchersTests
     {
-        private const string TestJson = @"{
-  ""firstName"": ""John"",
-  ""lastName"" : ""doe"",
-  ""age""      : 26,
-  ""ageString""      : ""26"",
-  ""address""  : {
-    ""streetAddress"": ""naist street"",
-    ""city""         : ""Nara"",
-    ""postalCode""   : ""630-0192""
-  },
-  ""phoneNumbers"": [
-    {
-      ""type""  : ""iPhone"",
-      ""number"": ""0123-4567-8888""
-    },
-    {
-      ""type""  : ""home"",
-      ""subType"" : ""null"",
-      ""number"": ""0123-4567-8910""
-    }
-  ]
-}";
-
-        private const string TestJArray = @"[
-  {
-    ""type""  : ""iPhone"",
-    ""number"": ""0123-4567-8888""
-  },
-  {
-    ""type""  : ""home"",
-    ""subType"" : ""kitchen"",
-    ""number"": ""0123-4567-8910""
-  }
-]";
+        private string testJson = DataUtils.GetDataFrom("TestJson.json");
+        private string testJArray = DataUtils.GetDataFrom("TestJArray.json");
 
         private static RestClient client;
 
         [BeforeSuite]
         public static void SetUp() =>
-            client = new RestClient(Paths.ApiBaseUrl);
+            client = new RestClient(Paths.ReastApiBaseUrl);
 
         [AfterSuite]
         public static void TearDown() =>
@@ -59,46 +26,46 @@ namespace Unicorn.UnitTests.Tests
         [Test, Author("Vitaliy Dobriyan")]
         public void TestBodyContainsValueMatcherPositive() =>
             Assert.That(GetResponse("{expectedBodyPart}"), 
-                Service.Rest.Response.ContentContains("expectedBody"));
+                Response.Rest.ContentContains("expectedBody"));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestBodyContainsValueMatcherWithNull() =>
-            CheckNegativeScenario(() => Assert.That(null, 
-                Service.Rest.Response.ContentContains("expectedBody")));
+            TestHelpers.CheckNegativeScenario(() => Assert.That(null,
+                Response.Rest.ContentContains("expectedBody")));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestBodyContainsValueMatcherNegative() =>
-            CheckNegativeScenario(() => Assert.That(
-                GetResponse("{expectedBodyPart}"), 
-                Service.Rest.Response.ContentContains("NotExpectedBody")));
+            TestHelpers.CheckNegativeScenario(() => Assert.That(
+                GetResponse("{expectedBodyPart}"),
+                Response.Rest.ContentContains("NotExpectedBody")));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasEndpointMatcherNegative() =>
-            CheckNegativeScenario(() => Assert.That(
+            TestHelpers.CheckNegativeScenario(() => Assert.That(
                 client,
                 Service.Rest.HasEndpoint("NotExistingEndpoint")));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasEndpointMatcherNegativeNull() =>
-            CheckNegativeScenario(() => Assert.That(
+            TestHelpers.CheckNegativeScenario(() => Assert.That(
                 null,
                 Service.Rest.HasEndpoint("NotExistingEndpoint")));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasEndpointMatcherNegativeNoBaseUrl() =>
-            CheckNegativeScenario(() => Assert.That(
+            TestHelpers.CheckNegativeScenario(() => Assert.That(
                 new RestClient(),
                 Service.Rest.HasEndpoint("weee")));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasEndpointMatcherNegativeNoBaseUrlWithNot() =>
-            CheckNegativeScenario(() => Assert.That(
+            TestHelpers.CheckNegativeScenario(() => Assert.That(
                 new RestClient(),
                 Is.Not(Service.Rest.HasEndpoint("weee"))));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasEndpointMatcherNegativeNullWithNot() =>
-            CheckNegativeScenario(() => Assert.That(
+            TestHelpers.CheckNegativeScenario(() => Assert.That(
                 null,
                 Is.Not(Service.Rest.HasEndpoint("NotExistingEndpoint"))));
 
@@ -106,81 +73,81 @@ namespace Unicorn.UnitTests.Tests
         public void TestHasEndpointMatcherPositive() =>
             Assert.That(
                 client,
-                Service.Rest.HasEndpoint("/!api/internal/repositories/dobriyanchik/unicorntaf/metadata"));
+                Service.Rest.HasEndpoint("/objects/1"));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasEndpointMatcherNegativeNotExistingBaseUrl() =>
-            CheckNegativeScenario(() => Assert.That(
+            TestHelpers.CheckNegativeScenario(() => Assert.That(
                 new RestClient("http://bla-bla/"),
                 Service.Rest.HasEndpoint("NotExistingEndpoint")));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasStatusCodeMatcherPositive() =>
             Assert.That(GetResponse(""), 
-                Service.Rest.Response.HasStatusCode(HttpStatusCode.OK));
+                Response.HasStatusCode(HttpStatusCode.OK));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasStatusCodeMatcherWithNull() =>
-            CheckNegativeScenario(() => Assert.That(null, 
-                Service.Rest.Response.HasStatusCode(HttpStatusCode.OK)));
+            TestHelpers.CheckNegativeScenario(() => Assert.That(null, 
+                Response.HasStatusCode(HttpStatusCode.OK)));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasStatusCodeMatcherNegative() =>
-            CheckNegativeScenario(() => Assert.That(
+            TestHelpers.CheckNegativeScenario(() => Assert.That(
                 GetResponse(""), 
-                Service.Rest.Response.HasStatusCode(HttpStatusCode.Accepted)));
+                Response.HasStatusCode(HttpStatusCode.Accepted)));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokensCountMatcherPositive() =>
-            Assert.That(GetResponse(TestJson), 
-                Service.Rest.Response.HasTokensCount("$.phoneNumbers[*]", 2));
+            Assert.That(GetResponse(testJson), 
+                Response.Rest.HasTokensCount("$.phoneNumbers[*]", 2));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokensCountMatcherPositiveNoToken() =>
-            Assert.That(GetResponse(TestJson), 
-                Service.Rest.Response.HasTokensCount("$.phoneNumbersNotExisting[*]", 0));
+            Assert.That(GetResponse(testJson),
+                Response.Rest.HasTokensCount("$.phoneNumbersNotExisting[*]", 0));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokensCountMatcherWithNull() =>
-            CheckNegativeScenario(() => Assert.That(null, 
-                Service.Rest.Response.HasTokensCount("$.phoneNumbers", 3)));
+            TestHelpers.CheckNegativeScenario(() => Assert.That(null,
+                Response.Rest.HasTokensCount("$.phoneNumbers", 3)));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokensCountMatcherNegative() =>
-            CheckNegativeScenario(() => Assert.That(
-                GetResponse(TestJson), 
-                Service.Rest.Response.HasTokensCount("$.phoneNumbers", 3)));
+            TestHelpers.CheckNegativeScenario(() => Assert.That(
+                GetResponse(testJson),
+                Response.Rest.HasTokensCount("$.phoneNumbers", 3)));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokensCountMatcherPositiveNullAssString() =>
-            CheckNegativeScenario(() => Assert.That(
-                GetResponse(TestJson), 
-                Service.Rest.Response.HasTokenWithValue("$..subType", "null")));
+            TestHelpers.CheckNegativeScenario(() => Assert.That(
+                GetResponse(testJson),
+                Response.Rest.HasTokenWithValue("$..subType", "null")));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokenWithValueMatcherPositiveInt() =>
-            Assert.That(GetResponse(TestJson), 
-                Service.Rest.Response.HasTokenWithValue("$.age", 26));
+            Assert.That(GetResponse(testJson),
+                Response.Rest.HasTokenWithValue("$.age", 26));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokenWithValueMatcherPositiveJArray() =>
-            Assert.That(GetResponse(TestJArray), 
-                Service.Rest.Response.HasTokenWithValue("$..type", "iPhone"));
+            Assert.That(GetResponse(testJArray),
+                Response.Rest.HasTokenWithValue("$..type", "iPhone"));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokenWithValueMatcherPositiveString() =>
-            Assert.That(GetResponse(TestJson), 
-                Service.Rest.Response.HasTokenWithValue("$.firstName", "John"));
+            Assert.That(GetResponse(testJson),
+                Response.Rest.HasTokenWithValue("$.firstName", "John"));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokenWithValueMatcherWithNull() =>
-            CheckNegativeScenario(() => Assert.That(null, 
-                Service.Rest.Response.HasTokenWithValue("$.phoneNumbers", 3)));
+            TestHelpers.CheckNegativeScenario(() => Assert.That(null,
+                Response.Rest.HasTokenWithValue("$.phoneNumbers", 3)));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokenWithValueMatcherNegativeInt() =>
-            CheckNegativeScenario(() => Assert.That(
-                GetResponse(TestJson), Service.Rest.Response.HasTokenWithValue("$.ageNoToken", "26")));
+            TestHelpers.CheckNegativeScenario(() => Assert.That(
+                GetResponse(testJson), Response.Rest.HasTokenWithValue("$.ageNoToken", "26")));
 
         ////[Author(Author.VDobriyan)]
         ////[Test("HasTokenWithValueMatcher negative scenario (int)")]
@@ -197,57 +164,45 @@ namespace Unicorn.UnitTests.Tests
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestEachTokenHasChildMatcherPositive() =>
-            Assert.That(GetResponse(TestJson), 
-                Service.Rest.Response.EachTokenHasChild("$.phoneNumbers[*]", "type"));
+            Assert.That(GetResponse(testJson),
+                Response.Rest.EachTokenHasChild("$.phoneNumbers[*]", "type"));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestEachTokenHasChildMatcherWithNull() =>
-            CheckNegativeScenario(() => Assert.That(null, 
-                Service.Rest.Response.EachTokenHasChild("$.phoneNumbers[*]", "type")));
+            TestHelpers.CheckNegativeScenario(() => Assert.That(null,
+                Response.Rest.EachTokenHasChild("$.phoneNumbers[*]", "type")));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestEachTokenHasChildMatcherNegative() =>
-            CheckNegativeScenario(() => Assert.That(
-                GetResponse(TestJson), 
-                Service.Rest.Response.EachTokenHasChild("$.phoneNumbers[*]", "subType")));
+            TestHelpers.CheckNegativeScenario(() => Assert.That(
+                GetResponse(testJson),
+                Response.Rest.EachTokenHasChild("$.phoneNumbers[*]", "subType")));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestEachTokenHasChildMatcherNegativeNoToken() =>
-            CheckNegativeScenario(() => Assert.That(
-                GetResponse(TestJson), Service.Rest.Response.EachTokenHasChild(
+            TestHelpers.CheckNegativeScenario(() => Assert.That(
+                GetResponse(testJson), Service.Rest.Response.EachTokenHasChild(
                     "$.ageNoToken", "26")));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokenMatchingJsonPathMatcherPositive() =>
-            Assert.That(GetResponse(TestJson), 
-                Service.Rest.Response.HasTokenMatchingJsonPath(
+            Assert.That(GetResponse(testJson),
+                Response.Rest.HasTokenMatchingJsonPath(
                     "$.phoneNumbers[?(@.number == '0123-4567-8910')]"));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokenMatchingJsonPathMatcherWithNull() =>
-            CheckNegativeScenario(() => Assert.That(null, 
-                Service.Rest.Response.HasTokenMatchingJsonPath(
+            TestHelpers.CheckNegativeScenario(() => Assert.That(null,
+                Response.Rest.HasTokenMatchingJsonPath(
                     "$.phoneNumbers[?(@.number == '0123-4567-8910')]")));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokenMatchingJsonPathMatcherNegative() =>
-            CheckNegativeScenario(() => Assert.That(
-                GetResponse(TestJson), 
-                Service.Rest.Response.HasTokenMatchingJsonPath(
+            TestHelpers.CheckNegativeScenario(() => Assert.That(
+                GetResponse(testJson),
+                Response.Rest.HasTokenMatchingJsonPath(
                     "$.phoneNumbers[?(@.number == '0sdfsdfsd123-4567-8910')]")));
 
-        private void CheckNegativeScenario(Action action)
-        {
-            try
-            {
-                action();
-                throw new InvalidOperationException("Assertion was passed but shouldn't.");
-            }
-            catch (AssertionException)
-            {
-                // positive scenario.
-            }
-        }
 
         private static RestResponse GetResponse(string json) =>
             new RestResponse(HttpStatusCode.OK, null, null)

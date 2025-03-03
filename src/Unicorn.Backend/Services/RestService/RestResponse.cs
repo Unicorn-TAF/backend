@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Net.Http.Headers;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Unicorn.Taf.Core.Logging;
 
 namespace Unicorn.Backend.Services.RestService
 {
@@ -43,9 +41,28 @@ namespace Unicorn.Backend.Services.RestService
                 }
                 catch (JsonReaderException)
                 {
-                    ULog.Error("Unable to parse response as JSON. Content:\n{0}", Content);
+                    LogTruncatedContent(Content);
                     throw;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Deserializes response to specified type.
+        /// </summary>
+        /// <typeparam name="T">type to deserialize to</typeparam>
+        /// <returns>deserialized object instance</returns>
+        /// <exception cref="JsonReaderException"/>
+        public T As<T>()
+        {
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(Content);
+            }
+            catch (JsonReaderException)
+            {
+                LogTruncatedContent(Content);
+                throw;
             }
         }
     }

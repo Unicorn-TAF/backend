@@ -19,4 +19,8 @@
     <ProjectReference Include="..\Unicorn.Backend\Unicorn.Backend.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="$(ProjectDir)TestData\**" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

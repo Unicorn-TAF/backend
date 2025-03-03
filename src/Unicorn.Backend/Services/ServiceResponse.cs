@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http.Headers;
+using Unicorn.Taf.Core.Logging;
 
 namespace Unicorn.Backend.Services
 {
@@ -53,5 +54,14 @@ namespace Unicorn.Backend.Services
         /// Gets or sets response headers.
         /// </summary>
         public HttpResponseHeaders Headers { get; set; }
+
+        protected static void LogTruncatedContent(string content)
+        {
+            string truncated = content.Length > 500 ?
+                    content.Substring(0, 500) + " (content truncated ...)" :
+                    content;
+
+            ULog.Error("Unable to parse response as JSON. Content:\n{0}", truncated);
+        }
     }
 }

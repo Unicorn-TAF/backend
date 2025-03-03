@@ -8,51 +8,58 @@ using Unicorn.Taf.Core.Testing;
 using Unicorn.Taf.Core.Testing.Attributes;
 using Unicorn.Taf.Core.Verification;
 using Unicorn.Taf.Core.Verification.Matchers;
+using Unicorn.UnitTests.Dto;
 
 namespace Unicorn.UnitTests.Tests
 {
     [Suite]
     public class RestClientTests
     {
-        private const string FileEndpoint = "/dobriyanchik/unicorntaf/downloads/Release%202.0.0%20nuget%20packages.zip";
-        private const string ExpectedFileName = "Release 2.0.0 nuget packages.zip";
+        private const string FileEndpoint = "/assets/" + ExpectedFileName;
+        private const string ExpectedFileName = "test-file.txt";
         private static RestClient client;
 
         [BeforeSuite]
         public static void SetUp() =>
-            client = new RestClient(Paths.ApiBaseUrl);
+            client = new RestClient(Paths.ReastApiBaseUrl);
 
         [AfterSuite]
         public static void TearDown() =>
-                client = null;
+            client = null;
 
         [Author("Vitaliy Dobriyan")]
-        [Test("Rest client sends correct get request")]
+        [Test("Rest client sends correct GET request")]
         public void TestRestClientCorrectGetRequest()
         {
-            RestResponse employee = client.SendRequest(
-                HttpMethod.Get,
-                "/!api/internal/repositories/dobriyanchik/unicorntaf/metadata");
+            RestResponse employee = client.SendRequest(HttpMethod.Get, "/objects/1");
 
             Assert.That(employee.Status, Is.EqualTo(HttpStatusCode.OK));
-            Assert.That(employee.Content, Is.EqualTo(@"{""has_statuses"": true, ""has_lfs_files"": false}"));
-            Assert.IsTrue(employee.ExecutionTime > TimeSpan.Zero && employee.ExecutionTime < TimeSpan.FromMinutes(2),
-                "request execution time looks incorrect, actual: " + employee.ExecutionTime);
+            Assert.That(employee.Content, Text.Contains("Google Pixel 6 Pro"));
+            Assert.That(employee.ExecutionTime, Is.IsLessThan(TimeSpan.FromSeconds(5)));
 
-            Assert.IsTrue(employee.Headers.GetValues("X-Dc-Location").Any(h => h.Contains("Micros")),
+            Assert.IsTrue(employee.Headers.GetValues("server").Any(h => h.Contains("cloudflare")),
                 "response does not contain expected header");
         }
 
         [Author("Vitaliy Dobriyan")]
-        [Test("Rest client sends correct get request")]
+        [Test("Rest client sends correct POST request")]
         public void TestRestClientCorrectPostRequest()
         {
-            string body = @"{""events"":[{""name"":""bitbucket.connect.discovery_card.view"",""referrer"":""https://bitbucket.org/dobriyanchik/unicorntaf/src/master/"",""timeDelta"":-2298}]}";
-            RestResponse response = client.SendRequest(
-                HttpMethod.Post,
-                "/!api/internal/analytics/events", body);
+            RestResponse response = client
+                .SendRequest(HttpMethod.Post, "/objects", @"{""name"": ""Unicorn"",""data"": ""test json""}");
 
-            Assert.That(response.Status, Is.EqualTo(HttpStatusCode.NoContent));
+            Assert.That(response.Status, Is.EqualTo(HttpStatusCode.OK));
+            Assert.That(response.Content, Text.Contains(@"""name"":""Unicorn"""));
+        }
+
+        [Author("Vitaliy Dobriyan")]
+        [Test("Rest response deserialization")]
+        public void TestRestResponseDeserialization()
+        {
+            RestDto launchInfo = client.SendRequest(HttpMethod.Get, "/objects/1").As<RestDto>();
+
+            Assert.That(launchInfo.Id, Is.EqualTo("1"));
+            Assert.That(launchInfo.Name, Is.EqualTo("Google Pixel 6 Pro"));
         }
 
         [Author("Evgeniy Voronyuk")]
@@ -61,10 +68,14 @@ namespace Unicorn.UnitTests.Tests
         {
             string fileName;
 
-            using (Stream stream = client.GetFileStream(FileEndpoint, out fileName))
+            using (Stream stream = new RestClient(Paths.UnicornBaseUrl).GetFileStream(FileEndpoint, out fileName))
             {
                 Assert.That(fileName, Is.EqualTo(ExpectedFileName));
-                Assert.That(stream.ReadByte(), Is.EqualTo(80));
+
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    Assert.That(reader.ReadToEnd(), Is.EqualTo("This is a test file"));
+                }
             }
         }
 
@@ -74,7 +85,7 @@ namespace Unicorn.UnitTests.Tests
         {
             string filePath = Path.Combine(Paths.DllFolder, ExpectedFileName);
 
-            client.DownloadFile(FileEndpoint, Paths.DllFolder);
+            new RestClient(Paths.UnicornBaseUrl).DownloadFile(FileEndpoint, Paths.DllFolder);
             Assert.IsTrue(File.Exists(filePath), "File wasn't found");
         }
     }
