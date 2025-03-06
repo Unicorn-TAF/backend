@@ -1,11 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
-    <NumberToWords xmlns="http://www.dataaccess.com/webservicesserver/">
-      <ubiNum>500</ubiNum>
-    </NumberToWords>
-    <NumberToWords xmlns="http://www.dataaccess.com/webservicesserver/">
-      <ubiNum>400</ubiNum>
-    </NumberToWords>
+    <Response>
+      <NumberToWords>
+        <ubiNum>500</ubiNum>
+      </NumberToWords>
+      <NumberToWords>
+        <ubiNum>400</ubiNum>
+      </NumberToWords>
+      <NumberToNumber>
+        <ubiN>400</ubiN>
+      </NumberToNumber>
+    </Response>
   </soap:Body>
 </soap:Envelope>

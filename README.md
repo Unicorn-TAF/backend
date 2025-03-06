@@ -4,10 +4,10 @@
 
 Implementation of interaction with web services based on `HttpClient`.
 
-* Client for REST services
-* REST service matchers collection
+* Clients for REST and SOAP services
+* Responses matchers collection
 
-Base custom API client example
+Base custom REST API client example
 ```csharp
 // Implementation of some dummy api client (should inherit RestClient)
 public class DummyApiClient : RestClient
@@ -29,8 +29,8 @@ Perform assertions on call result
 RestResponse userResponse = new DummyApiClient().GetUser(2);
 
 // Perform assertions on the result using build-in matchers 
-Assert.That(userResponse, Service.Rest.Response.HasStatusCode(HttpStatusCode.OK));
-Assert.That(userResponse, Service.Rest.Response.HasTokenWithValue("$.data.id", 2));
+Assert.That(userResponse, Response.HasStatusCode(HttpStatusCode.OK));
+Assert.That(userResponse, Response.Rest.HasTokenWithValue("$.data.id", 2));
 ```
 
 Work with sessions
@@ -69,4 +69,12 @@ Files download
 ```csharp
 RestClient client = new RestClient("https://some-url");
 client.DownloadFile("/api/some-endpoint", "destination_directory_");
+```
+
+SOAP client usage example
+```csharp
+SoapClient client = new SoapClient("https://www.dataaccess.com");
+SoapResponse response = client.Get("/webservicesserver/NumberConversion.wso/NumberToWords?ubiNum=234");
+Assert.That(response, Response.HasStatusCode(HttpStatusCode.OK));
+Assert.That(response, Response.ContentContains("<string>two hundred and thirty four </string>"));
 ```

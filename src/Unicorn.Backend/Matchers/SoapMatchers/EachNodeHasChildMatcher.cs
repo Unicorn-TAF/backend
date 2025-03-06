@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using Unicorn.Backend.Services.RestService;
 using Unicorn.Backend.Services.SoapService;
 using Unicorn.Taf.Core.Verification.Matchers;
 
