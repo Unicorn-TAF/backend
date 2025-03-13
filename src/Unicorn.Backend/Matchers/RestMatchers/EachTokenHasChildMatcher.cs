@@ -27,7 +27,7 @@ namespace Unicorn.Backend.Matchers.RestMatchers
         /// <summary>
         /// Gets verification description.
         /// </summary>
-        public override string CheckDescription => 
+        public override string CheckDescription =>
             $"each token in {_tokensJsonPath} has child '{_expectedChild}'";
 
         /// <summary>

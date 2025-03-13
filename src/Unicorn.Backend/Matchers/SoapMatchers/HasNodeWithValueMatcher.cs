@@ -30,11 +30,11 @@ namespace Unicorn.Backend.Matchers.SoapMatchers
         /// <summary>
         /// Gets verification description.
         /// </summary>
-        public override string CheckDescription => 
+        public override string CheckDescription =>
             $"has node '{_xPath}' with value '{_nodeValue}'";
 
         /// <summary>
-        /// Checks if target <see cref="RestResponse"/> matches condition corresponding to specific matcher implementations.
+        /// Checks if target <see cref="SoapResponse"/> matches condition corresponding to specific matcher implementations.
         /// </summary>
         /// <param name="actual">SOAP response under assertion</param>
         /// <returns>true - if object matches specific condition; otherwise - false</returns>

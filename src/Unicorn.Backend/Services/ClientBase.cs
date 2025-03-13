@@ -102,6 +102,11 @@ namespace Unicorn.Backend.Services
             return request;
         }
 
+        /// <summary>
+        /// Gets <see cref="HttpClient"/> instance allowing auto redirects
+        /// </summary>
+        /// <param name="request">source request instance (used to determine behavior of cookies handling)</param>
+        /// <returns></returns>
         protected HttpClient GetClient(HttpRequestMessage request)
         {
             if (client == null)

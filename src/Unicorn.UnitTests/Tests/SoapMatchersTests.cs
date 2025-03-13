@@ -26,31 +26,31 @@ namespace Unicorn.UnitTests.Tests
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestEachNodeHasChildMatcherPositive() =>
-            Assert.That(response, Response.Soap.EachNodeHasChild("//*[name() = 'NumberToWords']", "ubiNum"));
+            Assert.That(response, ApiResponse.Soap.EachNodeHasChild("//*[name() = 'NumberToWords']", "ubiNum"));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokenMatchingJsonPathMatcherNegative() =>
             Assert.Throws<AssertionException>(() => Assert.That(
                 response,
-                Response.Soap.EachNodeHasChild("//NumberToWords", "ubiNum1")));
+                ApiResponse.Soap.EachNodeHasChild("//NumberToWords", "ubiNum1")));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokenMatchingJsonPathMatcherNegativeWithNull() =>
             Assert.Throws<AssertionException>(() => Assert.That(
                 null,
-                Response.Soap.EachNodeHasChild("//NumberToWords", "ubiNum1")));
+                ApiResponse.Soap.EachNodeHasChild("//NumberToWords", "ubiNum1")));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokenMatchingJsonPathMatcherNegativeWithNotWithNull() =>
             Assert.Throws<AssertionException>(() => Assert.That(
                 null,
-                Is.Not(Response.Soap.EachNodeHasChild("//NumberToWords", "ubiNum1"))));
+                Is.Not(ApiResponse.Soap.EachNodeHasChild("//NumberToWords", "ubiNum1"))));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestEachNodeHasChildMatcherNagativeWhenParentsNotFound() =>
             Assert.Throws<AssertionException>(() => Assert.That(
                 response,
-                Response.Soap.EachNodeHasChild("//NumberToWordsws", "ubiNum")));
+                ApiResponse.Soap.EachNodeHasChild("//NumberToWordsws", "ubiNum")));
 
         #endregion
 
@@ -58,23 +58,23 @@ namespace Unicorn.UnitTests.Tests
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasNodeMatchingXPathPositive() =>
-            Assert.That(response, Response.Soap.HasNodeMatchingXPath("//NumberToNumber"));
+            Assert.That(response, ApiResponse.Soap.HasNodeMatchingXPath("//NumberToNumber"));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasNodeMatchingXPathNegative() =>
             Assert.Throws<AssertionException>(() => Assert.That(
                 response,
-                Response.Soap.HasNodeMatchingXPath("//NumberToWordss")));
+                ApiResponse.Soap.HasNodeMatchingXPath("//NumberToWordss")));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasNodeMatchingXPathWithNegationPositive() =>
-            Assert.That(response, Is.Not(Response.Soap.HasNodeMatchingXPath("//asdfsdf")));
+            Assert.That(response, Is.Not(ApiResponse.Soap.HasNodeMatchingXPath("//asdfsdf")));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasNodeMatchingXPathWithNegationNegative() =>
             Assert.Throws<AssertionException>(() => Assert.That(
                 response,
-                Is.Not(Response.Soap.HasNodeMatchingXPath("//NumberToNumber"))));
+                Is.Not(ApiResponse.Soap.HasNodeMatchingXPath("//NumberToNumber"))));
 
         #endregion
 
@@ -82,23 +82,23 @@ namespace Unicorn.UnitTests.Tests
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasNodesCountPositive() =>
-            Assert.That(response, Response.Soap.HasNodesCount("//*[name() = 'NumberToWords']", 2));
+            Assert.That(response, ApiResponse.Soap.HasNodesCount("//*[name() = 'NumberToWords']", 2));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasNodesCountNegative() =>
             Assert.Throws<AssertionException>(() => Assert.That(
                 response,
-                Response.Soap.HasNodesCount("//*[name() = 'NumberToWords']", 3)));
+                ApiResponse.Soap.HasNodesCount("//*[name() = 'NumberToWords']", 3)));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasNodesCountWithNegationPositive() =>
-            Assert.That(response, Is.Not(Response.Soap.HasNodesCount("//asdfsdf", 1)));
+            Assert.That(response, Is.Not(ApiResponse.Soap.HasNodesCount("//asdfsdf", 1)));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasNodesCountWithNegationNegative() =>
             Assert.Throws<AssertionException>(() => Assert.That(
                 response,
-                Is.Not(Response.Soap.HasNodesCount("//*[name() = 'NumberToWords']", 2))));
+                Is.Not(ApiResponse.Soap.HasNodesCount("//*[name() = 'NumberToWords']", 2))));
 
         #endregion
 
@@ -106,27 +106,27 @@ namespace Unicorn.UnitTests.Tests
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasNodeWithValuePositive() =>
-            Assert.That(response, Response.Soap.HasNodeWithValue("//NumberToWords/ubiNum", "500"));
+            Assert.That(response, ApiResponse.Soap.HasNodeWithValue("//NumberToWords/ubiNum", "500"));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasNodeWithValuePositive1() =>
-            Assert.That(response, Response.Soap.HasNodeWithValue("//NumberToWords/ubiNum", "400"));
+            Assert.That(response, ApiResponse.Soap.HasNodeWithValue("//NumberToWords/ubiNum", "400"));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasNodeWithValueNegative() =>
             Assert.Throws<AssertionException>(() => Assert.That(
                 response,
-                Response.Soap.HasNodeWithValue("//NumberToWords/ubiNum", "1500")));
+                ApiResponse.Soap.HasNodeWithValue("//NumberToWords/ubiNum", "1500")));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasNodeWithValueWithNegationPositive() =>
-            Assert.That(response, Is.Not(Response.Soap.HasNodeWithValue("//NumberToWords/ubiNum", "1500")));
+            Assert.That(response, Is.Not(ApiResponse.Soap.HasNodeWithValue("//NumberToWords/ubiNum", "1500")));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasNodeWithValueWithNegationNegative() =>
             Assert.Throws<AssertionException>(() => Assert.That(
                 response,
-                Is.Not(Response.Soap.HasNodeWithValue("//NumberToWords/ubiNum", "500"))));
+                Is.Not(ApiResponse.Soap.HasNodeWithValue("//NumberToWords/ubiNum", "500"))));
 
         #endregion
     }

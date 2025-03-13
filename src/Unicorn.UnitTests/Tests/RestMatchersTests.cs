@@ -25,19 +25,19 @@ namespace Unicorn.UnitTests.Tests
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestBodyContainsValueMatcherPositive() =>
-            Assert.That(GetResponse("{expectedBodyPart}"), 
-                Response.ContentContains("expectedBody"));
+            Assert.That(GetResponse("{expectedBodyPart}"),
+                ApiResponse.ContentContains("expectedBody"));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestBodyContainsValueMatcherWithNull() =>
             Assert.Throws<AssertionException>(() => Assert.That(null,
-                Response.ContentContains("expectedBody")));
+                ApiResponse.ContentContains("expectedBody")));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestBodyContainsValueMatcherNegative() =>
             Assert.Throws<AssertionException>(() => Assert.That(
                 GetResponse("{expectedBodyPart}"),
-                Response.ContentContains("NotExpectedBody")));
+                ApiResponse.ContentContains("NotExpectedBody")));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasEndpointMatcherNegative() =>
@@ -83,113 +83,152 @@ namespace Unicorn.UnitTests.Tests
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasStatusCodeMatcherPositive() =>
-            Assert.That(GetResponse(""), 
-                Response.HasStatusCode(HttpStatusCode.OK));
+            Assert.That(GetResponse(""),
+                ApiResponse.HasStatusCode(HttpStatusCode.OK));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasStatusCodeMatcherWithNull() =>
-            Assert.Throws<AssertionException>(() => Assert.That(null, 
-                Response.HasStatusCode(HttpStatusCode.OK)));
+            Assert.Throws<AssertionException>(() => Assert.That(null,
+                ApiResponse.HasStatusCode(HttpStatusCode.OK)));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasStatusCodeMatcherNegative() =>
             Assert.Throws<AssertionException>(() => Assert.That(
-                GetResponse(""), 
-                Response.HasStatusCode(HttpStatusCode.Accepted)));
+                GetResponse(""),
+                ApiResponse.HasStatusCode(HttpStatusCode.Accepted)));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokensCountMatcherPositive() =>
-            Assert.That(GetResponse(testJson), 
-                Response.Rest.HasTokensCount("$.phoneNumbers[*]", 2));
+            Assert.That(GetResponse(testJson),
+                ApiResponse.Rest.HasTokensCount("$.phoneNumbers[*]", 2));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokensCountMatcherPositiveNoToken() =>
             Assert.That(GetResponse(testJson),
-                Response.Rest.HasTokensCount("$.phoneNumbersNotExisting[*]", 0));
+                ApiResponse.Rest.HasTokensCount("$.phoneNumbersNotExisting[*]", 0));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokensCountMatcherWithNull() =>
             Assert.Throws<AssertionException>(() => Assert.That(null,
-                Response.Rest.HasTokensCount("$.phoneNumbers", 3)));
+                ApiResponse.Rest.HasTokensCount("$.phoneNumbers", 3)));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokensCountMatcherNegative() =>
             Assert.Throws<AssertionException>(() => Assert.That(
                 GetResponse(testJson),
-                Response.Rest.HasTokensCount("$.phoneNumbers", 3)));
+                ApiResponse.Rest.HasTokensCount("$.phoneNumbers", 3)));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokensCountMatcherPositiveNullAssString() =>
             Assert.Throws<AssertionException>(() => Assert.That(
                 GetResponse(testJson),
-                Response.Rest.HasTokenWithValue("$..subType", "null")));
+                ApiResponse.Rest.HasTokenWithValue("$..subType", "null")));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokenWithValueMatcherPositiveInt() =>
             Assert.That(GetResponse(testJson),
-                Response.Rest.HasTokenWithValue("$.age", 26));
+                ApiResponse.Rest.HasTokenWithValue("$.age", 26));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokenWithValueMatcherPositiveJArray() =>
             Assert.That(GetResponse(testJArray),
-                Response.Rest.HasTokenWithValue("$..type", "iPhone"));
+                ApiResponse.Rest.HasTokenWithValue("$..type", "iPhone"));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokenWithValueMatcherPositiveString() =>
             Assert.That(GetResponse(testJson),
-                Response.Rest.HasTokenWithValue("$.firstName", "John"));
+                ApiResponse.Rest.HasTokenWithValue("$.firstName", "John"));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokenWithValueMatcherWithNull() =>
             Assert.Throws<AssertionException>(() => Assert.That(null,
-                Response.Rest.HasTokenWithValue("$.phoneNumbers", 3)));
+                ApiResponse.Rest.HasTokenWithValue("$.phoneNumbers", 3)));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokenWithValueMatcherNegativeInt() =>
             Assert.Throws<AssertionException>(() => Assert.That(
-                GetResponse(testJson), Response.Rest.HasTokenWithValue("$.ageNoToken", "26")));
+                GetResponse(testJson), ApiResponse.Rest.HasTokenWithValue("$.ageNoToken", "26")));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestEachTokenHasChildMatcherPositive() =>
             Assert.That(GetResponse(testJson),
-                Response.Rest.EachTokenHasChild("$.phoneNumbers[*]", "type"));
+                ApiResponse.Rest.EachTokenHasChild("$.phoneNumbers[*]", "type"));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestEachTokenHasChildMatcherWithNull() =>
             Assert.Throws<AssertionException>(() => Assert.That(null,
-                Response.Rest.EachTokenHasChild("$.phoneNumbers[*]", "type")));
+                ApiResponse.Rest.EachTokenHasChild("$.phoneNumbers[*]", "type")));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestEachTokenHasChildMatcherNegative() =>
             Assert.Throws<AssertionException>(() => Assert.That(
                 GetResponse(testJson),
-                Response.Rest.EachTokenHasChild("$.phoneNumbers[*]", "subType")));
+                ApiResponse.Rest.EachTokenHasChild("$.phoneNumbers[*]", "subType")));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestEachTokenHasChildMatcherNegativeNoToken() =>
             Assert.Throws<AssertionException>(() => Assert.That(
-                GetResponse(testJson), Response.Rest.EachTokenHasChild(
+                GetResponse(testJson), ApiResponse.Rest.EachTokenHasChild(
                     "$.ageNoToken", "26")));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokenMatchingJsonPathMatcherPositive() =>
             Assert.That(GetResponse(testJson),
-                Response.Rest.HasTokenMatchingJsonPath(
+                ApiResponse.Rest.HasTokenMatchingJsonPath(
                     "$.phoneNumbers[?(@.number == '0123-4567-8910')]"));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokenMatchingJsonPathMatcherWithNull() =>
             Assert.Throws<AssertionException>(() => Assert.That(null,
-                Response.Rest.HasTokenMatchingJsonPath(
+                ApiResponse.Rest.HasTokenMatchingJsonPath(
                     "$.phoneNumbers[?(@.number == '0123-4567-8910')]")));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokenMatchingJsonPathMatcherNegative() =>
             Assert.Throws<AssertionException>(() => Assert.That(
                 GetResponse(testJson),
-                Response.Rest.HasTokenMatchingJsonPath(
+                ApiResponse.Rest.HasTokenMatchingJsonPath(
                     "$.phoneNumbers[?(@.number == '0sdfsdfsd123-4567-8910')]")));
 
+
+        #region HasTokensListWithValuesMatcher
+
+        [Test, Author("Vitaliy Dobriyan")]
+        public void TestHasTokensListWithValuesMatcherPositiveInt() =>
+            Assert.That(GetResponse(testJArray),
+                ApiResponse.Rest.HasTokensListWithValues("$..id", 1, 2));
+
+        [Test, Author("Vitaliy Dobriyan")]
+        public void TestHasTokensListWithValuesMatcherPositiveIntWithNegation() =>
+            Assert.That(GetResponse(testJArray),
+                Is.Not(ApiResponse.Rest.HasTokensListWithValues("$..id", 3, 2)));
+
+        [Test, Author("Vitaliy Dobriyan")]
+        public void TestHasTokensListWithValuesMatcherNegativeIntWithDuplication() =>
+            Assert.Throws<AssertionException>(() => Assert.That(GetResponse(testJArray),
+                ApiResponse.Rest.HasTokensListWithValues("$..id", 2, 2)));
+
+        [Test, Author("Vitaliy Dobriyan")]
+        public void TestHasTokensListWithValuesMatcherNegativeIntWithEmptyActuals() =>
+            Assert.Throws<AssertionException>(() => Assert.That(GetResponse(testJArray),
+                ApiResponse.Rest.HasTokensListWithValues("$..dsafid", 2, 2)));
+
+        [Test, Author("Vitaliy Dobriyan")]
+        public void TestHasTokensListWithValuesMatcherNegativeIntWithEmptyExpecteds() =>
+            Assert.Throws<AssertionException>(() => Assert.That(GetResponse(testJArray),
+                ApiResponse.Rest.HasTokensListWithValues("$..id", new int[0])));
+
+        [Test, Author("Vitaliy Dobriyan")]
+        public void TestHasTokensListWithValuesMatcherWithNull() =>
+            Assert.Throws<AssertionException>(() => Assert.That(null,
+                ApiResponse.Rest.HasTokensListWithValues("$..type", "home", "iPhone")));
+
+        [Test, Author("Vitaliy Dobriyan")]
+        public void TestHasTokensListWithValuesMatcherWithNullWithNegation() =>
+            Assert.Throws<AssertionException>(() => Assert.That(null,
+                Is.Not(ApiResponse.Rest.HasTokensListWithValues("$..type", "home", "iPhone"))));
+
+        #endregion
 
         private static RestResponse GetResponse(string json) =>
             new RestResponse(HttpStatusCode.OK, null, null)

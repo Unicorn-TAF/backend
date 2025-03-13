@@ -28,7 +28,7 @@ namespace Unicorn.Backend.Matchers.SoapMatchers
         /// <summary>
         /// Gets verification description.
         /// </summary>
-        public override string CheckDescription => 
+        public override string CheckDescription =>
             $"has {_expectedCount} nodes with XPath '{_xPath}'";
 
         /// <summary>

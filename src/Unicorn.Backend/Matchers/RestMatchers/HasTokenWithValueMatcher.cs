@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
+using System.Linq;
 using Unicorn.Backend.Services.RestService;
 using Unicorn.Taf.Core.Verification.Matchers;
 
@@ -16,7 +16,7 @@ namespace Unicorn.Backend.Matchers.RestMatchers
         private readonly T _tokenValue;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HasTokenWithValueMatcher{T}"/> class with JSONPAth and token value.
+        /// Initializes a new instance of the <see cref="HasTokenWithValueMatcher{T}"/> class with JSONPath and token value.
         /// </summary>
         /// <param name="jsonPath">JSONPath to search for tokens</param>
         /// <param name="tokenValue">expected token value</param>
@@ -29,7 +29,7 @@ namespace Unicorn.Backend.Matchers.RestMatchers
         /// <summary>
         /// Gets verification description.
         /// </summary>
-        public override string CheckDescription => 
+        public override string CheckDescription =>
             $"has token '{_jsonPath}' with value '{_tokenValue}'";
 
         /// <summary>
