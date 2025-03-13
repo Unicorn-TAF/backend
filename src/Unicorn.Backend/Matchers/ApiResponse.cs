@@ -7,7 +7,7 @@ namespace Unicorn.Backend.Matchers
     /// <summary>
     /// Entry point for Web Service matchers.
     /// </summary>
-    public static class Response
+    public static class ApiResponse
     {
         /// <summary>
         /// Gets entry point for REST response matchers.

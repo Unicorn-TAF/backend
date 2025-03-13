@@ -15,7 +15,7 @@ namespace Unicorn.Backend.Matchers.SoapMatchers
         /// <summary>
         /// Initializes a new instance of the <see cref="HasNodeMatchingXPathMatcher"/> class with XPath.
         /// </summary>
-        /// <param name="jsonPath">XPath to search for nodes</param>
+        /// <param name="xPath">XPath to search for nodes</param>
         public HasNodeMatchingXPathMatcher(string xPath)
         {
             _xPath = xPath;
@@ -27,7 +27,7 @@ namespace Unicorn.Backend.Matchers.SoapMatchers
         public override string CheckDescription => $"has node matching XPath '{_xPath}'";
 
         /// <summary>
-        /// Checks if target <see cref="RestResponse"/> matches condition corresponding to specific matcher implementations.
+        /// Checks if target <see cref="SoapResponse"/> matches condition corresponding to specific matcher implementations.
         /// </summary>
         /// <param name="actual">SOAP response under assertion</param>
         /// <returns>true - if object matches specific condition; otherwise - false</returns>

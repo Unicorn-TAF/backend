@@ -16,7 +16,7 @@ namespace Unicorn.Backend.Matchers.RestMatchers
         private readonly T _tokenValue;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HasTokenWithValueMatcher{T}"/> class with JSONPAth and token value.
+        /// Initializes a new instance of the <see cref="HasTokenWithValueMatcher{T}"/> class with JSONPath and token value.
         /// </summary>
         /// <param name="jsonPath">JSONPath to search for tokens</param>
         /// <param name="tokenValue">expected token value</param>

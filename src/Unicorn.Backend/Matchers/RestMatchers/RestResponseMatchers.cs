@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 
 namespace Unicorn.Backend.Matchers.RestMatchers
 {
@@ -40,6 +41,26 @@ namespace Unicorn.Backend.Matchers.RestMatchers
         /// <returns><see cref="HasTokenWithValueMatcher{T}"/> instance</returns>
         public HasTokenWithValueMatcher<T> HasTokenWithValue<T>(string jsonPath, T tokenValue) =>
             new HasTokenWithValueMatcher<T>(jsonPath, tokenValue);
+
+        /// <summary>
+        /// Matcher to check if REST service JSON response has list of tokens matching specified 
+        /// JSONPath with expected values.
+        /// </summary>
+        /// <param name="jsonPath">JSONPath to search for tokens</param>
+        /// <param name="tokensValues">expected token value</param>
+        /// <returns><see cref="HasTokensListWithValuesMatcher{T}"/> instance</returns>
+        public HasTokensListWithValuesMatcher<T> HasTokensListWithValues<T>(string jsonPath, IList<T> tokensValues) =>
+            new HasTokensListWithValuesMatcher<T>(jsonPath, tokensValues);
+
+        /// <summary>
+        /// Matcher to check if REST service JSON response has list of tokens matching specified 
+        /// JSONPath with expected values.
+        /// </summary>
+        /// <param name="jsonPath">JSONPath to search for tokens</param>
+        /// <param name="tokensValues">expected token value</param>
+        /// <returns><see cref="HasTokensListWithValuesMatcher{T}"/> instance</returns>
+        public HasTokensListWithValuesMatcher<T> HasTokensListWithValues<T>(string jsonPath, params T[] tokensValues) =>
+            new HasTokensListWithValuesMatcher<T>(jsonPath, tokensValues);
 
         /// <summary>
         /// Matcher to check if REST service JSON response has expected number of tokens 

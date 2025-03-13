@@ -55,6 +55,10 @@ namespace Unicorn.Backend.Services
         /// </summary>
         public HttpResponseHeaders Headers { get; set; }
 
+        /// <summary>
+        /// Logs content parsing error and truncates it till 500 symbols.
+        /// </summary>
+        /// <param name="content">content to log</param>
         protected static void LogTruncatedContent(string content)
         {
             string truncated = content.Length > 500 ?
