@@ -44,7 +44,7 @@ namespace Unicorn.Backend.Services.SoapService
                     {
                         return new XDocument(document.XPathSelectElement("//*[name()='soap:Body']/*"));
                     }
-                        
+
                     return document;
                 }
                 catch (XmlException)

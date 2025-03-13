@@ -26,7 +26,7 @@ namespace Unicorn.UnitTests.Tests
         public void TestSoapClientCorrectPostRequestWithXmlBody()
         {
             SoapResponse response = client.Post(
-                "/webservicesserver/NumberConversion.wso", 
+                "/webservicesserver/NumberConversion.wso",
                 DataUtils.GetDataFrom("SoapRequestBody.xml"));
 
             CheckResponse(response);

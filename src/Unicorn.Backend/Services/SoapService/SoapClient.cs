@@ -63,7 +63,7 @@ namespace Unicorn.Backend.Services.SoapService
 
             Stopwatch timer = Stopwatch.StartNew();
             HttpResponseMessage response = GetClient(request).SendAsync(request).Result;
-            
+
             string responseContent = response.Content.ReadAsStringAsync().Result;
             TimeSpan elapsed = timer.Elapsed;
 

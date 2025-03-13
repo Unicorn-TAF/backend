@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
+using System.Linq;
 using Unicorn.Backend.Services.RestService;
 using Unicorn.Taf.Core.Verification.Matchers;
 
@@ -29,7 +29,7 @@ namespace Unicorn.Backend.Matchers.RestMatchers
         /// <summary>
         /// Gets verification description.
         /// </summary>
-        public override string CheckDescription => 
+        public override string CheckDescription =>
             $"has token '{_jsonPath}' with value '{_tokenValue}'";
 
         /// <summary>

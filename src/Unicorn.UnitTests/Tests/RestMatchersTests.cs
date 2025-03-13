@@ -25,7 +25,7 @@ namespace Unicorn.UnitTests.Tests
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestBodyContainsValueMatcherPositive() =>
-            Assert.That(GetResponse("{expectedBodyPart}"), 
+            Assert.That(GetResponse("{expectedBodyPart}"),
                 ApiResponse.ContentContains("expectedBody"));
 
         [Test, Author("Vitaliy Dobriyan")]
@@ -83,23 +83,23 @@ namespace Unicorn.UnitTests.Tests
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasStatusCodeMatcherPositive() =>
-            Assert.That(GetResponse(""), 
+            Assert.That(GetResponse(""),
                 ApiResponse.HasStatusCode(HttpStatusCode.OK));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasStatusCodeMatcherWithNull() =>
-            Assert.Throws<AssertionException>(() => Assert.That(null, 
+            Assert.Throws<AssertionException>(() => Assert.That(null,
                 ApiResponse.HasStatusCode(HttpStatusCode.OK)));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasStatusCodeMatcherNegative() =>
             Assert.Throws<AssertionException>(() => Assert.That(
-                GetResponse(""), 
+                GetResponse(""),
                 ApiResponse.HasStatusCode(HttpStatusCode.Accepted)));
 
         [Test, Author("Vitaliy Dobriyan")]
         public void TestHasTokensCountMatcherPositive() =>
-            Assert.That(GetResponse(testJson), 
+            Assert.That(GetResponse(testJson),
                 ApiResponse.Rest.HasTokensCount("$.phoneNumbers[*]", 2));
 
         [Test, Author("Vitaliy Dobriyan")]

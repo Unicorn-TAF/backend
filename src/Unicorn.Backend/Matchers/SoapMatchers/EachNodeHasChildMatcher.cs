@@ -30,7 +30,7 @@ namespace Unicorn.Backend.Matchers.SoapMatchers
         /// <summary>
         /// Gets verification description.
         /// </summary>
-        public override string CheckDescription => 
+        public override string CheckDescription =>
             $"each node in {_nodesXpath} has child '{_childNodeName}'";
 
         /// <summary>

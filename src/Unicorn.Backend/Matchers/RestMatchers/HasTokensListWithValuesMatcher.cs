@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json.Linq;
 using Unicorn.Backend.Services.RestService;
 using Unicorn.Taf.Core.Verification.Matchers;
 
@@ -32,15 +32,15 @@ namespace Unicorn.Backend.Matchers.RestMatchers
         /// </summary>
         /// <param name="jsonPath">JSONPath to search for tokens</param>
         /// <param name="tokensValues">expected token value</param>
-        public HasTokensListWithValuesMatcher(string jsonPath, params T[] tokensValues) 
+        public HasTokensListWithValuesMatcher(string jsonPath, params T[] tokensValues)
             : this(jsonPath, tokensValues.ToList())
-        { 
+        {
         }
 
         /// <summary>
         /// Gets verification description.
         /// </summary>
-        public override string CheckDescription => 
+        public override string CheckDescription =>
             $"has list of tokens '{_jsonPath}' with values '[{string.Join(",", _tokensValues)}]'";
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Unicorn.Backend.Matchers.RestMatchers
             Dictionary<T, int> counts = _tokensValues
                 .GroupBy(v => v)
                 .ToDictionary(g => g.Key, g => g.Count());
-            
+
             bool ok = true;
 
             foreach (T n in castedValues)
