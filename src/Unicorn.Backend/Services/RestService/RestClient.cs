@@ -36,7 +36,7 @@ namespace Unicorn.Backend.Services.RestService
         /// based on existing session.<br/>
         /// <see cref="SecurityProtocolType.Tls12"/> protocol is used by default.
         /// </summary>
-        /// <param name="baseUri">service base uri</param>
+        /// <param name="baseUri">service base URI</param>
         /// <param name="session">existing service session</param>
         public RestClient(Uri baseUri, IServiceSession session) : base(baseUri, session)
         {

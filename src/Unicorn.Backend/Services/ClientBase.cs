@@ -37,7 +37,7 @@ namespace Unicorn.Backend.Services
         /// based on existing session.<br/>
         /// <see cref="SecurityProtocolType.Tls12"/> protocol is used by default.
         /// </summary>
-        /// <param name="baseUri">service base uri</param>
+        /// <param name="baseUri">service base URI</param>
         /// <param name="session">existing service session</param>
         protected ClientBase(Uri baseUri, IServiceSession session)
         {
