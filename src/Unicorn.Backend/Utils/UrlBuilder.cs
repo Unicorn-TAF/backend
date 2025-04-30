@@ -51,7 +51,7 @@ namespace Unicorn.Backend.Utils
         /// <param name="key">parameter key</param>
         /// <param name="value">parameter value</param>
         /// <returns>this instance</returns>
-        public UrlBuilder Query(string key, object value)
+        public UrlBuilder Query(string key, string value)
         {
             AppendParamsSectionStartIfNotExists();
             AppendAndIfNeeded();
@@ -91,18 +91,11 @@ namespace Unicorn.Backend.Utils
         /// </summary>
         /// <param name="parameters">dictionary of parameters</param>
         /// <returns>this instance</returns>
-        public UrlBuilder AppendParams(Dictionary<string, object> parameters)
+        public UrlBuilder Query(Dictionary<string, string> parameters)
         {
-            foreach (KeyValuePair<string, object> pair in parameters)
+            foreach (KeyValuePair<string, string> pair in parameters)
             {
-                if (pair.Value is IEnumerable enumerable)
-                {
-                    Query(pair.Key, enumerable);
-                }
-                else
-                {
-                    Query(pair.Key, pair.Value);
-                }
+                Query(pair.Key, pair.Value);
             }
 
             return this;

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unicorn.Backend.Utils;
 using Unicorn.Taf.Core.Testing;
 using Unicorn.Taf.Core.Testing.Attributes;
@@ -43,6 +44,22 @@ namespace Unicorn.UnitTests.Tests
                 .Fragment("section2").Query("param1", "value1").Query("param2", "value2").Build();
 
             Assert.That(path, Is.EqualTo("/page.html#section2?param1=value1&param2=value2"));
+        }
+
+        [Author("Vitalii Dobriian")]
+        [Test]
+        public void TestUrlBuilderHandlesEndpointWithMultipleQueryParametersAsDictionary()
+        {
+            Dictionary<string, string> queryParams = new Dictionary<string, string>
+            {
+                { "param1", "value1" },
+                { "param2", "value2" }
+            };
+
+            string path = new UrlBuilder(BaseUrl)
+                .Query(queryParams).Build();
+
+            Assert.That(path, Is.EqualTo("/page.html?param1=value1&param2=value2"));
         }
 
         [Author("Vitalii Dobriian")]
