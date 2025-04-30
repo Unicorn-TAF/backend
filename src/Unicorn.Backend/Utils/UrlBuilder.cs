@@ -28,9 +28,20 @@ namespace Unicorn.Backend.Utils
         /// </summary>
         /// <param name="urlPart">url part to append</param>
         /// <returns>this instance</returns>
-        public UrlBuilder AppendUrl(string urlPart)
+        public UrlBuilder Append(string urlPart)
         {
             _urlSb.Append('/').Append(HttpUtility.UrlEncode(urlPart.Trim('/')));
+            return this;
+        }
+
+        /// <summary>
+        /// Appends a fragment (named anchor (url encoded) to existing URL. '#' symbol is added automatically.
+        /// </summary>
+        /// <param name="fragment">url fragment</param>
+        /// <returns>this instance</returns>
+        public UrlBuilder Fragment(string fragment)
+        {
+            _urlSb.Append('#').Append(HttpUtility.UrlEncode(fragment));
             return this;
         }
 
@@ -40,7 +51,7 @@ namespace Unicorn.Backend.Utils
         /// <param name="key">parameter key</param>
         /// <param name="value">parameter value</param>
         /// <returns>this instance</returns>
-        public UrlBuilder AppendParam(string key, object value)
+        public UrlBuilder Query(string key, string value)
         {
             AppendParamsSectionStartIfNotExists();
             AppendAndIfNeeded();
@@ -55,7 +66,7 @@ namespace Unicorn.Backend.Utils
         /// <param name="key">parameter key</param>
         /// <param name="values">parameter values list</param>
         /// <returns>this instance</returns>
-        public UrlBuilder AppendParams(string key, IEnumerable values)
+        public UrlBuilder Query(string key, IEnumerable values)
         {
             AppendParamsSectionStartIfNotExists();
             AppendAndIfNeeded();
@@ -80,18 +91,11 @@ namespace Unicorn.Backend.Utils
         /// </summary>
         /// <param name="parameters">dictionary of parameters</param>
         /// <returns>this instance</returns>
-        public UrlBuilder AppendParams(Dictionary<string, object> parameters)
+        public UrlBuilder Query(Dictionary<string, string> parameters)
         {
-            foreach (KeyValuePair<string, object> pair in parameters)
+            foreach (KeyValuePair<string, string> pair in parameters)
             {
-                if (pair.Value is IEnumerable enumerable)
-                {
-                    AppendParams(pair.Key, enumerable);
-                }
-                else
-                {
-                    AppendParam(pair.Key, pair.Value);
-                }
+                Query(pair.Key, pair.Value);
             }
 
             return this;
