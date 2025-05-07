@@ -12,6 +12,7 @@ namespace Unicorn.Backend.Services
     {
         private HttpClientHandler handler;
         private HttpClient client;
+        private bool ignoreSslErrors = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientBase"/> class with service base url.<br/>
@@ -36,7 +37,7 @@ namespace Unicorn.Backend.Services
         /// based on existing session.<br/>
         /// <see cref="SecurityProtocolType.Tls12"/> protocol is used by default.
         /// </summary>
-        /// <param name="baseUri">service base uri</param>
+        /// <param name="baseUri">service base URI</param>
         /// <param name="session">existing service session</param>
         protected ClientBase(Uri baseUri, IServiceSession session)
         {
@@ -62,6 +63,12 @@ namespace Unicorn.Backend.Services
         /// Gets or sets service base url.
         /// </summary>
         public Uri BaseUri { get; set; }
+
+        /// <summary>
+        /// Disables SSL verification for all client requests.
+        /// </summary>
+        public void DisableSslVerification() =>
+            ignoreSslErrors = true;
 
         /// <summary>
         /// Gets content type for service calls.
@@ -112,6 +119,12 @@ namespace Unicorn.Backend.Services
             if (client == null)
             {
                 handler = new HttpClientHandler();
+
+                if (ignoreSslErrors)
+                {
+                    handler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true;
+                }
+
                 handler.AllowAutoRedirect = AllowAutoRedirect;
 
                 // By default HttpClient uses CookieContainer.
