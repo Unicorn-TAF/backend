@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unicorn.Backend.Services.RestService;
+using Unicorn.Taf.Core.Utility;
 using Unicorn.Taf.Core.Verification.Matchers;
 
 namespace Unicorn.Backend.Matchers.RestMatchers
@@ -69,46 +71,14 @@ namespace Unicorn.Backend.Matchers.RestMatchers
 
             IEnumerable<T> castedValues = response.SelectTokens(_jsonPath).Select(t => t.Value<T>());
 
+            CollectionsComparer<T> comparer = new CollectionsComparer<T>()
+                .TrimOutputTo(1000)
+                .UseItemsBulletsInOutput(">");
 
-            Dictionary<T, int> counts = _tokensValues
-                .GroupBy(v => v)
-                .ToDictionary(g => g.Key, g => g.Count());
+            bool result = comparer.AreTheSame(castedValues, _tokensValues);
+            DescribeMismatch(Environment.NewLine + comparer.Output);
 
-            bool ok = true;
-
-            foreach (T n in castedValues)
-            {
-                if (counts.TryGetValue(n, out int c))
-                {
-                    counts[n] = c - 1;
-                }
-                else
-                {
-                    ok = false;
-                    break;
-                }
-            }
-
-            var areEqual = ok && counts.Values.All(c => c == 0);
-
-            if (areEqual == Reverse)
-            {
-                DescribeMismatch(DescribeCollection(castedValues, 1000));
-            }
-
-            return areEqual;
-        }
-
-        private string DescribeCollection(IEnumerable<T> collection, int trimLength)
-        {
-            string itemsList = string.Join(", ", collection);
-
-            if (itemsList.Length > trimLength)
-            {
-                itemsList = itemsList.Substring(0, trimLength) + " etc . . .";
-            }
-
-            return itemsList;
+            return result;
         }
     }
 }
